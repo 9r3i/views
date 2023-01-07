@@ -11,9 +11,6 @@
 # views
 An image generator for viewers
 
-# Sample
-[![9r3i Visitors](https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187&register=github.com/9r3i/views/tree/master)](https://github.com/9r3i)
-
 # Usage
 Basic sample
 ```
@@ -28,20 +25,32 @@ https://9r3i.web.id
 And path to API is ```/api/views/```
 
 ## Parameters
-- Require parameter is ```user```, is user-key to views counter
-- Next is parameter ```register```, read more about it in [Register](#register) section
-- The last one is parameter ```color```, this is optional, default value is ```0,0,0``` of red, yellow and blue, separated by comma, see the sample below [Add Text Color](#add-text-color)
+There are ```user``` (required), ```register```, ```color``` and ```monitor```.
 
-## Register
-First user cannot access the API, so it's gonna need some register, add to url query with key ```register``` with value a github repository that has views binary file ```views.bin```, for example:
+### user
+This parameter is required, as user-key to views counter, for example: 
 ```
-https://9r3i.web.id/api/views/?user=9r3i&register=github.com/9r3i/views/tree/master
+https://9r3i.web.id/api/views/?user=9r3i-views
 ```
 
-## Add Text Color
-Add color soft red
+### register
+First access user cannot use the API, so it's gonna need some register, add to url query with key ```register``` with value a github repository that has views binary file ```views.bin```, for example:
 ```
-https://9r3i.web.id/api/views/?user=9r3i&color=187,51,51
+https://9r3i.web.id/api/views/?user=9r3i-views&register=github.com/9r3i/views/tree/master
+```
+
+### color
+This parameter is to add text color, this parameter ```color``` is optional, default value is ```0,0,0``` (black), the values of red, yellow and blue, separated by comma, for example to add color soft blue:
+```
+https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187
+```
+The result will be like this:
+[![9r3i Visitors](https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187)](https://github.com/9r3i)
+
+### monitor
+This parameter is for monitoring the views, if this parameter is set, the counter won't increase, for example:
+```
+https://9r3i.web.id/api/views/?user=9r3i-views&monitor=true
 ```
 
 # Closing
