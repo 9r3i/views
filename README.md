@@ -34,7 +34,7 @@ https://9r3i.web.id/api/views/?user=9r3i-views
 ```
 
 ### register
-First access user cannot use the API, so it's gonna need some register, add to url query with key ```register``` with value a github repository that has views binary file ```views.bin```, for example:
+First access user cannot use the API, so it's gonna need some register, add parameter ```register``` to url query with value a github repository that has views binary file ```views.bin```, for example:
 ```
 https://9r3i.web.id/api/views/?user=9r3i-views&register=github.com/9r3i/views/tree/master
 ```
@@ -45,7 +45,7 @@ This parameter is to add text color, this parameter ```color``` is optional, def
 https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187
 ```
 The result will be like this:
-[![9r3i Visitors](https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187)](https://github.com/9r3i)
+[![9r3i Visitors](https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187)](https://github.com/9r3i/views)
 
 ### monitor
 This parameter is for monitoring the views, if this parameter is set, the counter won't increase, for example:
