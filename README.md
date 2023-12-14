@@ -14,13 +14,13 @@ An image generator for viewers
 # Usage
 Basic sample
 ```
-https://9r3i.web.id/api/views/?user=9r3i-views
+https://sabunjelly.com/api/views/?user=9r3i-views
 ```
 
 ## Hosts
 Right now, available hosts only in
 ```
-https://9r3i.web.id
+https://sabunjelly.com
 ```
 And path to API is ```/api/views/```
 
@@ -30,27 +30,27 @@ There are ```user``` (required), ```register```, ```color``` and ```monitor```.
 ### user
 This parameter is required, as user-key to views counter, for example: 
 ```
-https://9r3i.web.id/api/views/?user=9r3i-views
+https://sabunjelly.com/api/views/?user=9r3i-views
 ```
 
 ### register
 First access user cannot use the API, so it's gonna need some register, add parameter ```register``` to url query with value a github repository that has views binary file ```views.bin```, for example:
 ```
-https://9r3i.web.id/api/views/?user=9r3i-views&register=github.com/9r3i/views/tree/master
+https://sabunjelly.com/api/views/?user=9r3i-views&register=github.com/9r3i/views/tree/master
 ```
 
 ### color
 This parameter is to add text color, this parameter ```color``` is optional, default value is ```0,0,0``` (black), the values of red, yellow and blue, separated by comma, for example to add color soft blue:
 ```
-https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187
+https://sabunjelly.com/api/views/?user=9r3i-views&color=51,119,187
 ```
 The result will be like this:
-[![9r3i Visitors](https://9r3i.web.id/api/views/?user=9r3i-views&color=51,119,187)](https://github.com/9r3i/views)
+[![9r3i Visitors](https://sabunjelly.com/api/views/?user=9r3i-views&color=51,119,187)](https://github.com/9r3i/views)
 
 ### monitor
 This parameter is for monitoring the views, if this parameter is set, the counter won't increase, for example:
 ```
-https://9r3i.web.id/api/views/?user=9r3i-views&monitor=true
+https://sabunjelly.com/api/views/?user=9r3i-views&monitor=true
 ```
 
 # Closing
