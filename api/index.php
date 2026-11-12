@@ -1,6 +1,6 @@
 <?php
 (new class{
-  const version='2.0.0';
+  const version='2.1.0';
   protected $user;
   protected $font;
   protected $color;
@@ -12,14 +12,24 @@
     $this->font=__DIR__.'/views.ttf';
     $this->color=$this->colors($_GET['color']??'');
     $this->monitor=isset($_GET['monitor']);
+    /* set default header */
+    if(headers_sent()){return false;}
+    /* access control - to allow the access via ajax */
+    header('Access-Control-Allow-Origin: *'); /* allow origin */
+    header('Access-Control-Allow-Headers: Content-Type, Accept'); /* allow headers */
+    header('Access-Control-Allow-Methods: GET'); /* allow methods */
+    header('Access-Control-Allow-Credentials: true'); /* allow credentials */
+    header('Access-Control-Max-Age: 86400'); /* max age (24 hours) */
     /* user if match */
     $ptrn='/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i';
     if($this->user&&preg_match($ptrn,$this->user)){
       $fetch=$this->fetch('GET',$this->user);
       if($fetch){
-        $this->fetch('PATCH',$this->user,[
-          'visitor'=>intval($fetch->visitor)+1
-        ]);
+        if(!$this->monitor){
+          $this->fetch('PATCH',$this->user,[
+            'visitor'=>intval($fetch->visitor)+1
+          ]);
+        }
         $image=$this->getSVG($fetch->visitor);
         return $this->outSVG($image);
       }elseif(isset($_GET['register'])
@@ -45,7 +55,12 @@
   }
   /* get image */
   protected function getSVG(string $int){
-    $url='https://img.shields.io/badge/visitor-'.$int.'-orange.svg?style=for-the-badge';
+    $color='%23'
+      .dechex($this->color->red)
+      .dechex($this->color->yellow)
+      .dechex($this->color->blue);
+    $url='https://img.shields.io/badge/visitor-'
+      .$int.'-'.$color.'.svg?style=for-the-badge';
     $get=file_get_contents($url);
     return $get;
   }
@@ -177,18 +192,18 @@
   /* colors */
   protected function colors(string $color){
     $def=(object)[
-      'red'=>0,
-      'yellow'=>0,
-      'blue'=>0,
+      'red'=>16,
+      'yellow'=>16,
+      'blue'=>16,
     ];
     $ptrn='/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/';
     if(!preg_match($ptrn,$color,$akur)){
       return $def;
     }
     return (object)[
-      'red'=>min($akur[1],0xff),
-      'yellow'=>min($akur[2],0xff),
-      'blue'=>min($akur[3],0xff),
+      'red'=>max(min(intval($akur[1]),0xff),0x10),
+      'yellow'=>max(min(intval($akur[2]),0xff),0x10),
+      'blue'=>max(min(intval($akur[3]),0xff),0x10),
     ];
   }
   /* sample string image */
