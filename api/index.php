@@ -20,15 +20,15 @@
         $this->fetch('PATCH',$this->user,[
           'visitor'=>intval($fetch->visitor)+1
         ]);
-        $image=$this->create(intval($fetch->visitor));
-        return $this->out($image);
+        $image=$this->getSVG($fetch->visitor);
+        return $this->outSVG($image);
       }elseif(isset($_GET['register'])
         &&$this->register($_GET['register'])){
         $this->fetch('PUT',$this->user,[
           'visitor'=>1
         ]);
-        $image=$this->create(1);
-        return $this->out($image);
+        $image=$this->getSVG('1');
+        return $this->outSVG($image);
       }
     }
     /* build */
@@ -42,6 +42,27 @@
     }
     /* error output */
     return $this->error();
+  }
+  /* get image */
+  protected function getSVG(string $int){
+    $url='https://img.shields.io/badge/visitor-'.$int.'-orange.svg?style=for-the-badge';
+    $get=file_get_contents($url);
+    return $get;
+  }
+  /* output of image */
+  protected function outSVG(string $svg){
+    if(headers_sent()){exit;}
+    $fname=$this->user.'.svg';
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Cache-Control: public, max-age=1');
+    header('Content-Description: File Transfer');
+    header('Content-Disposition: attachment; filename="'.$fname.'"'); // attachment or inline
+    header('HTTP/1.1 200 OK');
+    header('Content-Type: image/svg+xml');
+    header('Content-Length: '.strlen($svg));
+    exit($svg);
   }
   /* result as json */
   protected function result($data=null){
