@@ -159,10 +159,16 @@ class views{
     header('Pragma: public');
     header('Cache-Control: public, max-age=1');
     header('Content-Description: File Transfer');
-    header('Content-Disposition: attachment; filename="'.$fname.'"');
+    header('Content-Disposition: inline; filename="'.$fname.'"');
     header('Content-Type: '.$mime);
     header('Content-Length: '.filesize($file));
     header('HTTP/1.1 200 OK');
+    /* access control - to allow the access via ajax */
+    header('Access-Control-Allow-Origin: *'); /* allow origin */
+    header('Access-Control-Allow-Headers: Content-Type, Accept'); /* allow headers */
+    header('Access-Control-Allow-Methods: GET'); /* allow methods */
+    header('Access-Control-Allow-Credentials: true'); /* allow credentials */
+    header('Access-Control-Max-Age: 86400'); /* max age (24 hours) */
     @readfile($file);
     exit;
   }
