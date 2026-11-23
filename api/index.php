@@ -1,6 +1,6 @@
 <?php
 (new class{
-  const version='2.1.0';
+  const version='2.2.0';
   protected $user;
   protected $font;
   protected $color;
@@ -55,6 +55,47 @@
   }
   /* get image */
   protected function getSVG(string $int){
+    $label='VISITOR';
+    $status=$int;
+    $color=implode('',['#',
+      str_pad(dechex($this->color->red),2,"0",STR_PAD_LEFT),
+      str_pad(dechex($this->color->yellow),2,"0",STR_PAD_LEFT),
+      str_pad(dechex($this->color->blue),2,"0",STR_PAD_LEFT),
+    ]);
+    /* estimate text widths */
+    $padding=20;
+    $charWidth=12;
+    $labelWidth=(int)round(strlen($label)*$charWidth+$padding);
+    $statusWidth= (int)round(strlen($status)*$charWidth+$padding);
+    $totalWidth=$labelWidth+$statusWidth;
+    /* calculate horizontal center points for the text */
+    $labelX=$labelWidth/2;
+    $statusX=$labelWidth+($statusWidth/2);
+    /* wrap the result for the output */
+    $result='<?xml version="1.0" encoding="UTF-8"?>'
+      .'<svg xmlns="http://www.w3.org/2000/svg" width="'.$totalWidth.'" height="28" role="img" aria-label="'.$label.': '.$status.'">'
+      .'<title>'.$label.': '.$status.'</title>'
+      .'<clipPath id="round"><rect width="'.$totalWidth.'" height="28" rx="3" fill="#fff"/></clipPath>'
+      .'<g clip-path="url(#round)">'
+      .'<rect width="'.$labelWidth.'" height="28" fill="#4b4b4b"/>'
+      .'<rect x="'.$labelWidth.'" width="'.$statusWidth.'" height="28" fill="'.$color.'"/>'
+      .'<rect width="'.$totalWidth.'" height="28" fill="url(#smooth)"/>'
+      .'</g>'
+      .'<linearGradient id="smooth" x2="0" y2="100%">'
+      .'<stop offset="0" stop-color="#bbb" stop-opacity=".1"/>'
+      .'<stop offset="1" stop-opacity=".1"/>'
+      .'</linearGradient>'
+      .'<g fill="#fff" text-anchor="middle" font-family="monospace,sans-serif,system-ui" font-size="16">'
+      .'<text x="'.$labelX.'" y="21" fill="#010101" fill-opacity=".3">'.$label.'</text>'
+      .'<text x="'.$statusX.'" y="21" fill="#010101" fill-opacity=".3">'.$status.'</text>'
+      .'<text x="'.$labelX.'" y="20">'.$label.'</text>'
+      .'<text x="'.$statusX.'" y="20">'.$status.'</text>'
+      .'</g>'
+      .'</svg>';
+    return $result;
+  }
+  /* get image -- from shields.io */
+  protected function getSVG_shields(string $int){
     $color='%23'
       .dechex($this->color->red)
       .dechex($this->color->yellow)
@@ -71,11 +112,11 @@
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
     header('Pragma: public');
-    header('Cache-Control: public, max-age=1');
+    header('Cache-Control: no-cache, no-store, must-revalidate');
     header('Content-Description: File Transfer');
     header('Content-Disposition: attachment; filename="'.$fname.'"'); // attachment or inline
     header('HTTP/1.1 200 OK');
-    header('Content-Type: image/svg+xml');
+    header('Content-Type: image/svg+xml; charset=utf-8');
     header('Content-Length: '.strlen($svg));
     exit($svg);
   }
