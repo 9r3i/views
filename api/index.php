@@ -1,6 +1,6 @@
 <?php
 (new class{
-  const version='2.2.0';
+  const version='2.2.1';
   protected $user;
   protected $font;
   protected $color;
@@ -25,12 +25,14 @@
     if($this->user&&preg_match($ptrn,$this->user)){
       $fetch=$this->fetch('GET',$this->user);
       if($fetch){
+        $visitor=intval($fetch->visitor);
         if(!$this->monitor){
+          $visitor+=1;
           $this->fetch('PATCH',$this->user,[
-            'visitor'=>intval($fetch->visitor)+1
+            'visitor'=>$visitor
           ]);
         }
-        $image=$this->getSVG($fetch->visitor);
+        $image=$this->getSVG((string)$visitor);
         return $this->outSVG($image);
       }elseif(isset($_GET['register'])
         &&$this->register($_GET['register'])){
